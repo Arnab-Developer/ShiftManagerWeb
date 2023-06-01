@@ -1,0 +1,31 @@
+﻿@page "/update-schedule"
+@inject IShiftService ShiftService
+
+<PageTitle>Update Schedule</PageTitle>
+
+<b>Update Schedule</b>
+
+Emp id:
+<InputText @bind-Value="empId" />
+Date:
+<InputText @bind-Value="date" />
+Shift:
+<InputText @bind-Value="shift" />
+
+<button @onclick="UpdateScheduleAsync">Save</button>
+
+@code {
+    private string empId;
+    private string date;
+    private string shift;
+
+    public UpdateSchedule()
+    {
+        empId = string.Empty;
+        date = string.Empty;
+        shift = string.Empty;
+    }
+
+    private async Task UpdateScheduleAsync() =>
+        await ShiftService.UpdateScheduleAsync(int.Parse(empId), DateTime.Parse(date), Enum.Parse<Shift>(shift));
+}

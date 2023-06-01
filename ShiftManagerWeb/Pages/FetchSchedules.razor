@@ -1,0 +1,102 @@
+﻿@page "/fetch-schedule"
+@inject IShiftService ShiftService
+
+<PageTitle>Fetch Schedule</PageTitle>
+
+<b>Fetch Schedule By Name</b>
+
+<table>
+    <tr>
+        <td>First Name</td>
+        <td><InputText @bind-Value="firstName" /></td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td><InputText @bind-Value="lastName" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button class="btn btn-primary" @onclick="GetSchedulesByName">Fetch</button></td>
+    </tr>
+</table>
+
+<b>Fetch Schedule By Date</b>
+
+<table>
+    <tr>
+        <td>Date</td>
+        <td><InputText @bind-Value="date" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button class="btn btn-primary" @onclick="GetSchedulesByDate">Fetch</button></td>
+    </tr>
+</table>
+
+<b>Fetch Schedule By Month</b>
+
+<table>
+    <tr>
+        <td>Month</td>
+        <td><InputText @bind-Value="month" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button class="btn btn-primary" @onclick="GetSchedulesByMonth">Fetch</button></td>
+    </tr>
+</table>
+
+@if (schedules.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Schedule Id</th>
+                <th>Date</th>
+                <th>Shift</th>
+                <th>Employee Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var schedule in schedules)
+            {
+                <tr>
+                    <td>@schedule.Id</td>
+                    <td>@schedule.Date.ToShortDateString()</td>
+                    <td>@schedule.Shift</td>
+                    <td>@schedule.Employee.Id</td>
+                    <td>@schedule.Employee.FirstName</td>
+                    <td>@schedule.Employee.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string firstName;
+    private string lastName;
+    private string date;
+    private string month;
+    private IEnumerable<Schedule> schedules;
+
+    public FetchSchedules()
+    {
+        firstName = string.Empty;
+        lastName = string.Empty;
+        date = string.Empty;
+        month = string.Empty;
+        schedules = Enumerable.Empty<Schedule>();
+    }
+
+    private async Task GetSchedulesByName() =>
+        schedules = await ShiftService.GetSchedulesAsync(firstName, lastName);
+
+    private async Task GetSchedulesByDate() =>
+        schedules = await ShiftService.GetSchedulesAsync(DateTime.Parse(date));
+
+    private async Task GetSchedulesByMonth() =>
+        schedules = await ShiftService.GetSchedulesAsync(Enum.Parse<Month>(month));
+}

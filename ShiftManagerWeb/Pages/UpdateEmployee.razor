@@ -1,0 +1,39 @@
+﻿@page "/update-employee"
+@inject IShiftService ShiftService
+
+<PageTitle>Update Employee</PageTitle>
+
+<b>Update Employee</b>
+
+<table>
+    <tr>
+        <td>Id</td>
+        <td>First Name</td>
+        <td>Last Name</td>
+    </tr>
+    <tr>
+        <td><InputText @bind-Value="id" /></td>
+        <td><InputText @bind-Value="firstName" /></td>
+        <td><InputText @bind-Value="lastName" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button @onclick="UpdateEmployeeAsync">Create</button></td>
+    </tr>
+</table>
+
+@code {
+    private string id;
+    private string firstName;
+    private string lastName;
+
+    public UpdateEmployee()
+    {
+        id = string.Empty;
+        firstName = string.Empty;
+        lastName = string.Empty;
+    }
+
+    private async Task UpdateEmployeeAsync() =>
+        await ShiftService.UpdateEmployeeAsync(int.Parse(id), firstName, lastName);
+}

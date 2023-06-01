@@ -1,0 +1,27 @@
+﻿@page "/delete-schedule"
+@inject IShiftService ShiftService
+
+<PageTitle>Delete Schedule</PageTitle>
+
+<b>Delete Schedule</b>
+
+Emp id:
+<InputText @bind-Value="empId" />
+Date:
+<InputText @bind-Value="date" />
+
+<button @onclick="DeleteScheduleAsync">Save</button>
+
+@code {
+    private string empId;
+    private string date;
+
+    public DeleteSchedule()
+    {
+        empId = string.Empty;
+        date = string.Empty;
+    }
+
+    private async Task DeleteScheduleAsync() =>
+        await ShiftService.DeleteScheduleAsync(int.Parse(empId), DateTime.Parse(date));
+}

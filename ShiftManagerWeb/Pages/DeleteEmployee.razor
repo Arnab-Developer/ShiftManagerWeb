@@ -1,0 +1,23 @@
+﻿@page "/delete-employee"
+@inject IShiftService ShiftService
+
+<PageTitle>Delete Employee</PageTitle>
+
+<b>Delete Employee</b>
+
+Emp id:
+<InputText @bind-Value="empId" />
+
+<button @onclick="DeleteEmployeeAsync">Save</button>
+
+@code {
+    private string empId;
+
+    public DeleteEmployee()
+    {
+        empId = string.Empty;
+    }
+
+    private async Task DeleteEmployeeAsync() =>
+        await ShiftService.DeleteEmployeeAsync(int.Parse(empId));
+}

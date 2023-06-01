@@ -1,0 +1,35 @@
+﻿@page "/create-employee"
+@inject IShiftService ShiftService
+
+<PageTitle>Create Employee</PageTitle>
+
+<b>Create Employee</b>
+
+<table>
+    <tr>
+        <td>First Name</td>
+        <td>Last Name</td>
+    </tr>
+    <tr>
+        <td><InputText @bind-Value="firstName" /></td>
+        <td><InputText @bind-Value="lastName" /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><button @onclick="CreateEmployeeAsync">Create</button></td>
+    </tr>
+</table>
+
+@code {
+    private string firstName;
+    private string lastName;
+
+    public CreateEmployee()
+    {
+        firstName = string.Empty;
+        lastName = string.Empty;
+    }
+
+    private async Task CreateEmployeeAsync() =>
+        await ShiftService.CreateEmployeeAsync(firstName, lastName);
+}
